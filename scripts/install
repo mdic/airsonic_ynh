@@ -238,14 +238,14 @@ ynh_script_progression --message="Finalizing installation..." --weight=6
 VERSION="1.15.0"
 
 # Change default admin password
-new_password=$(ynh_string_random --length=8)
-ynh_local_curl "/rest/changePassword.view" "u=admin" "t=$token" "s=$salt" "v=$VERSION" "c=myapp" "username=admin" "password=$new_password"
+new_password=$passwordAdmin
+ynh_local_curl "/rest/changePassword.view" "u=admin" "v=$VERSION" "c=myapp" "username=admin" "password=$new_password"
 
 # Create admin user
-passwordAdmin=$new_password
+passwordAdmin=$passwordAdmin
 token=$(echo -n $passwordAdmin$salt | md5sum | awk '{print $1}')
 
-ynh_local_curl "/rest/createUser.view" "u=admin" "t=$token" "s=$salt" "username=$admin" "password=a" "v=$VERSION" "c=myapp" "email=$mailadmin" "adminRole=Yes" "ldapAuthenticated=Yes" "settingsRole=Yes" "streamRole=Yes" "jukeboxRole=Yes" "downloadRole=Yes" "uploadRole=Yes" "playlistRole=Yes" "coverArtRole=Yes" "commentRole=Yes" "podcastRole=Yes" "shareRole=Yes" "videoConversionRole=Yes"
+ynh_local_curl "/rest/createUser.view" "u=admin" "username=$admin" "password=$passwordAdmin" "v=$VERSION" "c=myapp" "email=$mailadmin" "adminRole=Yes" "ldapAuthenticated=Yes" "settingsRole=Yes" "streamRole=Yes" "jukeboxRole=Yes" "downloadRole=Yes" "uploadRole=Yes" "playlistRole=Yes" "coverArtRole=Yes" "commentRole=Yes" "podcastRole=Yes" "shareRole=Yes" "videoConversionRole=Yes"
 
 # Remove the public access
 if [ $is_public -eq 0 ]
